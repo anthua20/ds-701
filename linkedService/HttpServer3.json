@@ -1,0 +1,12 @@
+{
+	"name": "HttpServer3",
+	"properties": {
+		"annotations": [],
+		"type": "HttpServer",
+		"typeProperties": {
+			"url": "http://api.openweathermap.org/data/2.5/air_pollution/history?lat=42.3601&lon=-71.0589&start=1706594864&end=1738285865&appid=739225d890a26ab4e56f875158bd3cdf",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}
