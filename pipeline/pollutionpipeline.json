@@ -1,0 +1,64 @@
+{
+	"name": "pollutionpipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "air pollution",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "HttpReadSettings",
+							"requestMethod": "GET"
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "pollutionsource",
+						"type": "DatasetReference",
+						"parameters": {
+							"lat": "42.3601",
+							"lon": "-71.0589",
+							"start": "1706594864",
+							"end": "1738285865",
+							"appid": "739225d890a26ab4e56f875158bd3cdf"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "pollutionsink",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2025-02-01T21:24:55Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,9 @@
+{
+	"name": "ds598anthonyhuangdatafactory",
+	"location": "eastus2",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "c6d5d2e2-aa81-4586-9ff3-fb329236184a",
+		"tenantId": "d57d32cc-c121-488f-b07b-dfe705680c71"
+	}
+}
