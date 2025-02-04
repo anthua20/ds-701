@@ -11,9 +11,6 @@
 		"AzureBlobStorage2_connectionString": {
 			"value": ""
 		},
-		"AzureBlobStorage3_connectionString": {
-			"value": ""
-		},
 		"GitHub_credential": {
 			"value": ""
 		},

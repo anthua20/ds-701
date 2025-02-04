@@ -15,10 +15,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage2'"
 		},
-		"AzureBlobStorage3_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage3'"
-		},
 		"GitHub_credential": {
 			"type": "secureString",
 			"metadata": "Secure string for 'credential' of 'GitHub'"
@@ -67,9 +63,6 @@
 					},
 					"AzureBlobStorage2_connectionString": {
 						"value": "[parameters('AzureBlobStorage2_connectionString')]"
-					},
-					"AzureBlobStorage3_connectionString": {
-						"value": "[parameters('AzureBlobStorage3_connectionString')]"
 					},
 					"GitHub_credential": {
 						"value": "[parameters('GitHub_credential')]"
