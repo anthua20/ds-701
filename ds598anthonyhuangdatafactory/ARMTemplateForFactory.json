@@ -34,10 +34,6 @@
 		"HttpServer2_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://history.openweathermap.org/data/2.5/history/city"
-		},
-		"HttpServer3_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "http://api.openweathermap.org/data/2.5/air_pollution/history?lat=42.3601&lon=-71.0589&start=1706594864&end=1738285865&appid=739225d890a26ab4e56f875158bd3cdf"
 		}
 	},
 	"variables": {
@@ -205,72 +201,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/testpipeline')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "HttpReadSettings",
-									"requestMethod": "GET"
-								},
-								"formatSettings": {
-									"type": "JsonReadSettings"
-								}
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "testsource",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "testsink",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/testsource')]",
-				"[concat(variables('factoryId'), '/datasets/testsink')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/historicalweathersink')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -419,115 +349,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/testsink')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage3",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": "bronze",
-						"container": "ds598anthonyhuangblobcontainer"
-					}
-				},
-				"schema": {
-					"type": "object",
-					"properties": {
-						"coord": {
-							"type": "object",
-							"properties": {
-								"lon": {
-									"type": "number"
-								},
-								"lat": {
-									"type": "number"
-								}
-							}
-						},
-						"list": {
-							"type": "array",
-							"items": {
-								"type": "object",
-								"properties": {
-									"main": {
-										"type": "object",
-										"properties": {
-											"aqi": {
-												"type": "integer"
-											}
-										}
-									},
-									"components": {
-										"type": "object",
-										"properties": {
-											"co": {
-												"type": "number"
-											},
-											"no": {
-												"type": "integer"
-											},
-											"no2": {
-												"type": "number"
-											},
-											"o3": {
-												"type": "number"
-											},
-											"so2": {
-												"type": "number"
-											},
-											"pm2_5": {
-												"type": "number"
-											},
-											"pm10": {
-												"type": "number"
-											},
-											"nh3": {
-												"type": "number"
-											}
-										}
-									},
-									"dt": {
-										"type": "integer"
-									}
-								}
-							}
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage3')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/testsource')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "HttpServer3",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "HttpServerLocation"
-					}
-				},
-				"schema": {}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/HttpServer3')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -609,21 +430,6 @@
 				"typeProperties": {
 					"url": "[parameters('HttpServer2_properties_typeProperties_url')]",
 					"enableServerCertificateValidation": false,
-					"authenticationType": "Anonymous"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/HttpServer3')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "HttpServer",
-				"typeProperties": {
-					"url": "[parameters('HttpServer3_properties_typeProperties_url')]",
-					"enableServerCertificateValidation": true,
 					"authenticationType": "Anonymous"
 				}
 			},
