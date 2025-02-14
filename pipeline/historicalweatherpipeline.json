@@ -50,7 +50,15 @@
 							"inputs": [
 								{
 									"referenceName": "historicalweathersource",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"lat": "42.3601",
+										"lon": "-71.0589",
+										"start": "@div(sub(ticks(addDays(utcNow(), mul(-7, add(item(), 1)))), ticks('1970-01-01T00:00:00Z')), 10000000)",
+										"end": "@div(sub(ticks(addDays(utcNow(), mul(-7, item()))), ticks('1970-01-01T00:00:00Z')), 10000000)",
+										"appid": "739225d890a26ab4e56f875158bd3cdf",
+										"dataType": "hour"
+									}
 								}
 							],
 							"outputs": [
