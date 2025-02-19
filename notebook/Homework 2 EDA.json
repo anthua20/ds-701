@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "33eaecab-5537-4e87-8324-2631d77e0cf1"
+				"spark.autotune.trackingId": "716fd7b2-3283-4683-a01b-410219fc3e0a"
 			}
 		},
 		"metadata": {
@@ -91,6 +91,17 @@
 			},
 			{
 				"cell_type": "code",
+				"source": [
+					"from pyspark.sql.functions import col, explode\n",
+					"import matplotlib.pyplot as plt\n",
+					"import seaborn as sns\n",
+					"import plotly.express as px\n",
+					"import pandas as pd"
+				],
+				"execution_count": 22
+			},
+			{
+				"cell_type": "code",
 				"metadata": {
 					"jupyter": {
 						"source_hidden": false,
@@ -112,8 +123,6 @@
 			{
 				"cell_type": "code",
 				"source": [
-					"from pyspark.sql.functions import col, explode\n",
-					"\n",
 					"air_pollution = air_pollution_df.select(\n",
 					"    col(\"coord.lat\").alias(\"latitude\"),\n",
 					"    col(\"coord.lon\").alias(\"longitude\"),\n",
@@ -181,6 +190,60 @@
 					"historical_weather.head()"
 				],
 				"execution_count": 19
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"fig_temp_dist, ax_temp_dist = plt.subplots(figsize=(10, 6))\n",
+					"sns.histplot(historical_weather[\"temperature\"], bins=30, kde=True, color=\"blue\", ax=ax_temp_dist)\n",
+					"ax_temp_dist.set_xlabel(\"Temperature (°C)\")\n",
+					"ax_temp_dist.set_ylabel(\"Frequency\")\n",
+					"ax_temp_dist.set_title(\"Distribution of Temperature\")\n",
+					"ax_temp_dist.grid(True)"
+				],
+				"execution_count": 23
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"fig_aqi_dist, ax_aqi_dist = plt.subplots(figsize=(10, 6))\n",
+					"sns.histplot(air_pollution[\"aqi\"], bins=10, kde=True, color=\"red\", ax=ax_aqi_dist)\n",
+					"ax_aqi_dist.set_xlabel(\"Air Quality Index (AQI)\")\n",
+					"ax_aqi_dist.set_ylabel(\"Frequency\")\n",
+					"ax_aqi_dist.set_title(\"Distribution of AQI Levels\")\n",
+					"ax_aqi_dist.grid(True)"
+				],
+				"execution_count": 25
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"fig_temp_humidity, ax_temp_humidity = plt.subplots(figsize=(10, 6))\n",
+					"sns.scatterplot(\n",
+					"    x=historical_weather[\"temperature\"], \n",
+					"    y=historical_weather[\"humidity\"], \n",
+					"    alpha=0.7, color=\"green\", ax=ax_temp_humidity\n",
+					")\n",
+					"ax_temp_humidity.set_xlabel(\"Temperature (°C)\")\n",
+					"ax_temp_humidity.set_ylabel(\"Humidity (%)\")\n",
+					"ax_temp_humidity.set_title(\"Temperature vs Humidity\")\n",
+					"ax_temp_humidity.grid(True)"
+				],
+				"execution_count": 28
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"fig_aqi_co = px.scatter(\n",
+					"    air_pollution, \n",
+					"    x=\"carbon_monoxide\", \n",
+					"    y=\"aqi\", \n",
+					"    title=\"AQI vs CO Levels\",\n",
+					"    labels={\"carbon_monoxide\": \"Carbon Monoxide (CO)\", \"aqi\": \"Air Quality Index\"},\n",
+					"    color=\"aqi\", size=\"carbon_monoxide\")\n",
+					"fig_aqi_co.show()"
+				],
+				"execution_count": 30
 			},
 			{
 				"cell_type": "code",
