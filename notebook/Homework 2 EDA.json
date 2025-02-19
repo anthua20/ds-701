@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "b25707b4-cc66-464c-baf6-c2581743403a"
+				"spark.autotune.trackingId": "33eaecab-5537-4e87-8324-2631d77e0cf1"
 			}
 		},
 		"metadata": {
@@ -52,8 +52,8 @@
 				"cell_type": "code",
 				"source": [
 					"# Set up the configuration for accessing the storage account\n",
-					"storage_account_name = \"sqladminuser\"\n",
-					"storage_account_key = \"sqladminpassword123#\"\n",
+					"storage_account_name = \"ds598anthonyhuangstorage\"\n",
+					"storage_account_key = \"\"\n",
 					"\n",
 					"spark.conf.set(\n",
 					"    \"fs.azure.account.key.\" + storage_account_name + \".dfs.core.windows.net\",\n",
@@ -61,7 +61,7 @@
 					")\n",
 					""
 				],
-				"execution_count": 2
+				"execution_count": 4
 			},
 			{
 				"cell_type": "code",
@@ -80,14 +80,14 @@
 					"# Read data directly from ADLS Gen2\n",
 					"container_name = \"ds598anthonyhuangblobcontainer\"\n",
 					"air_pollution_folder_path = \"bronze/data/2.5/air_pollution\"  # Folder, not a single file\n",
-					"historical_weather_folder_path = \"bronze\"\n",
+					"historical_weather_folder_path = \"bronze/historical_weather\"\n",
 					"\n",
 					"# Read all JSON files in the folder\n",
 					"air_pollution_df = spark.read.json(f\"abfss://{container_name}@{storage_account_name}.dfs.core.windows.net/{air_pollution_folder_path}\")\n",
 					"historical_weather_df = spark.read.json(f\"abfss://{container_name}@{storage_account_name}.dfs.core.windows.net/{historical_weather_folder_path}\")\n",
 					"# Show the DataFrame"
 				],
-				"execution_count": 3
+				"execution_count": 16
 			},
 			{
 				"cell_type": "code",
@@ -103,11 +103,84 @@
 					}
 				},
 				"source": [
-					"   historical_weather_df.head()\n",
+					"   historical_weather_df.printSchema()\n",
 					"\n",
-					"   air_pollution_df.head()"
+					"   air_pollution_df.printSchema()"
 				],
-				"execution_count": null
+				"execution_count": 7
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"from pyspark.sql.functions import col, explode\n",
+					"\n",
+					"air_pollution = air_pollution_df.select(\n",
+					"    col(\"coord.lat\").alias(\"latitude\"),\n",
+					"    col(\"coord.lon\").alias(\"longitude\"),\n",
+					"    explode(col(\"list\")).alias(\"list_element\")\n",
+					").select(\n",
+					"    col(\"latitude\"),\n",
+					"    col(\"longitude\"),\n",
+					"    col(\"list_element.dt\").alias(\"timestamp\"),\n",
+					"    col(\"list_element.main.aqi\").alias(\"aqi\"),\n",
+					"    col(\"list_element.components.co\").alias(\"carbon_monoxide\"),\n",
+					"    col(\"list_element.components.no\").alias(\"nitric_oxide\"),\n",
+					"    col(\"list_element.components.no2\").alias(\"nitrogen_dioxide\"),\n",
+					"    col(\"list_element.components.o3\").alias(\"ozone\"),\n",
+					"    col(\"list_element.components.so2\").alias(\"sulfur_dioxide\"),\n",
+					"    col(\"list_element.components.pm2_5\").alias(\"pm2_5\"),\n",
+					"    col(\"list_element.components.pm10\").alias(\"pm10\"),\n",
+					"    col(\"list_element.components.nh3\").alias(\"ammonia\")\n",
+					")\n",
+					"\n",
+					"air_pollution = air_pollution.toPandas()\n",
+					"air_pollution.head()\n",
+					""
+				],
+				"execution_count": 18
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"historical_weather = historical_weather_df.select(\n",
+					"    explode(col(\"list\")).alias(\"list_element\")\n",
+					").select(\n",
+					"    col(\"list_element.dt\").alias(\"timestamp\"),\n",
+					"    col(\"list_element.main.temp\").alias(\"temperature\"),\n",
+					"    col(\"list_element.main.feels_like\").alias(\"feels_like_temp\"),\n",
+					"    col(\"list_element.main.temp_max\").alias(\"max_temperature\"),\n",
+					"    col(\"list_element.main.temp_min\").alias(\"min_temperature\"),\n",
+					"    col(\"list_element.main.humidity\").alias(\"humidity\"),\n",
+					"    col(\"list_element.main.pressure\").alias(\"pressure\"),\n",
+					"    col(\"list_element.wind.speed\").alias(\"wind_speed\"),\n",
+					"    col(\"list_element.wind.deg\").alias(\"wind_direction\"),\n",
+					"    col(\"list_element.wind.gust\").alias(\"wind_gust\"),\n",
+					"    col(\"list_element.clouds.all\").alias(\"cloud_cover\"),\n",
+					"    col(\"list_element.rain.1h\").alias(\"rain_1h\"),\n",
+					"    col(\"list_element.rain.3h\").alias(\"rain_3h\"),\n",
+					"    col(\"list_element.snow.1h\").alias(\"snow_1h\"),\n",
+					"    explode(col(\"list_element.weather\")).alias(\"weather_element\")\n",
+					").select(\n",
+					"    col(\"timestamp\"),\n",
+					"    col(\"temperature\"),\n",
+					"    col(\"feels_like_temp\"),\n",
+					"    col(\"max_temperature\"),\n",
+					"    col(\"min_temperature\"),\n",
+					"    col(\"humidity\"),\n",
+					"    col(\"pressure\"),\n",
+					"    col(\"wind_speed\"),\n",
+					"    col(\"wind_direction\"),\n",
+					"    col(\"wind_gust\"),\n",
+					"    col(\"cloud_cover\"),\n",
+					"    col(\"rain_1h\"),\n",
+					"    col(\"rain_3h\"),\n",
+					"    col(\"snow_1h\"),\n",
+					"    col(\"weather_element.description\").alias(\"weather_description\")\n",
+					")\n",
+					"historical_weather = historical_weather.toPandas()\n",
+					"historical_weather.head()"
+				],
+				"execution_count": 19
 			},
 			{
 				"cell_type": "code",
