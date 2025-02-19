@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "716fd7b2-3283-4683-a01b-410219fc3e0a"
+				"spark.autotune.trackingId": "9beb2684-1c80-4a98-90f2-10d5bf9b7ae6"
 			}
 		},
 		"metadata": {
@@ -124,12 +124,8 @@
 				"cell_type": "code",
 				"source": [
 					"air_pollution = air_pollution_df.select(\n",
-					"    col(\"coord.lat\").alias(\"latitude\"),\n",
-					"    col(\"coord.lon\").alias(\"longitude\"),\n",
 					"    explode(col(\"list\")).alias(\"list_element\")\n",
 					").select(\n",
-					"    col(\"latitude\"),\n",
-					"    col(\"longitude\"),\n",
 					"    col(\"list_element.dt\").alias(\"timestamp\"),\n",
 					"    col(\"list_element.main.aqi\").alias(\"aqi\"),\n",
 					"    col(\"list_element.components.co\").alias(\"carbon_monoxide\"),\n",
@@ -141,12 +137,9 @@
 					"    col(\"list_element.components.pm10\").alias(\"pm10\"),\n",
 					"    col(\"list_element.components.nh3\").alias(\"ammonia\")\n",
 					")\n",
-					"\n",
-					"air_pollution = air_pollution.toPandas()\n",
-					"air_pollution.head()\n",
-					""
+					"air_pollution = air_pollution.toPandas()"
 				],
-				"execution_count": 18
+				"execution_count": 54
 			},
 			{
 				"cell_type": "code",
@@ -186,41 +179,55 @@
 					"    col(\"snow_1h\"),\n",
 					"    col(\"weather_element.description\").alias(\"weather_description\")\n",
 					")\n",
-					"historical_weather = historical_weather.toPandas()\n",
-					"historical_weather.head()"
+					"historical_weather = historical_weather.toPandas()"
 				],
-				"execution_count": 19
+				"execution_count": 55
 			},
 			{
 				"cell_type": "code",
 				"source": [
+					"air_pollution.head(10)"
+				],
+				"execution_count": 56
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"historical_weather.head(10)"
+				],
+				"execution_count": 57
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"historical_weather[\"temperaturec\"] = historical_weather[\"temperature\"] - 273.15\n",
 					"fig_temp_dist, ax_temp_dist = plt.subplots(figsize=(10, 6))\n",
-					"sns.histplot(historical_weather[\"temperature\"], bins=30, kde=True, color=\"blue\", ax=ax_temp_dist)\n",
+					"sns.histplot(historical_weather[\"temperaturec\"], bins=30, kde=True, color=\"blue\", ax=ax_temp_dist)\n",
 					"ax_temp_dist.set_xlabel(\"Temperature (°C)\")\n",
 					"ax_temp_dist.set_ylabel(\"Frequency\")\n",
 					"ax_temp_dist.set_title(\"Distribution of Temperature\")\n",
 					"ax_temp_dist.grid(True)"
 				],
-				"execution_count": 23
+				"execution_count": 62
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"fig_aqi_dist, ax_aqi_dist = plt.subplots(figsize=(10, 6))\n",
-					"sns.histplot(air_pollution[\"aqi\"], bins=10, kde=True, color=\"red\", ax=ax_aqi_dist)\n",
+					"sns.countplot(x=air_pollution[\"aqi\"], palette=\"Reds\", ax=ax_aqi_dist)\n",
 					"ax_aqi_dist.set_xlabel(\"Air Quality Index (AQI)\")\n",
 					"ax_aqi_dist.set_ylabel(\"Frequency\")\n",
 					"ax_aqi_dist.set_title(\"Distribution of AQI Levels\")\n",
 					"ax_aqi_dist.grid(True)"
 				],
-				"execution_count": 25
+				"execution_count": 69
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"fig_temp_humidity, ax_temp_humidity = plt.subplots(figsize=(10, 6))\n",
 					"sns.scatterplot(\n",
-					"    x=historical_weather[\"temperature\"], \n",
+					"    x=historical_weather[\"temperaturec\"], \n",
 					"    y=historical_weather[\"humidity\"], \n",
 					"    alpha=0.7, color=\"green\", ax=ax_temp_humidity\n",
 					")\n",
@@ -229,7 +236,7 @@
 					"ax_temp_humidity.set_title(\"Temperature vs Humidity\")\n",
 					"ax_temp_humidity.grid(True)"
 				],
-				"execution_count": 28
+				"execution_count": 63
 			},
 			{
 				"cell_type": "code",
@@ -243,7 +250,7 @@
 					"    color=\"aqi\", size=\"carbon_monoxide\")\n",
 					"fig_aqi_co.show()"
 				],
-				"execution_count": 30
+				"execution_count": 61
 			},
 			{
 				"cell_type": "code",
