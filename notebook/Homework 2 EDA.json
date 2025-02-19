@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "9beb2684-1c80-4a98-90f2-10d5bf9b7ae6"
+				"spark.autotune.trackingId": "ffcd2b3e-022b-43ef-9fef-bc42dd1dd865"
 			}
 		},
 		"metadata": {
@@ -61,7 +61,7 @@
 					")\n",
 					""
 				],
-				"execution_count": 4
+				"execution_count": 70
 			},
 			{
 				"cell_type": "code",
@@ -87,7 +87,7 @@
 					"historical_weather_df = spark.read.json(f\"abfss://{container_name}@{storage_account_name}.dfs.core.windows.net/{historical_weather_folder_path}\")\n",
 					"# Show the DataFrame"
 				],
-				"execution_count": 16
+				"execution_count": 71
 			},
 			{
 				"cell_type": "code",
@@ -98,7 +98,7 @@
 					"import plotly.express as px\n",
 					"import pandas as pd"
 				],
-				"execution_count": 22
+				"execution_count": 72
 			},
 			{
 				"cell_type": "code",
@@ -118,7 +118,7 @@
 					"\n",
 					"   air_pollution_df.printSchema()"
 				],
-				"execution_count": 7
+				"execution_count": 73
 			},
 			{
 				"cell_type": "code",
@@ -139,7 +139,7 @@
 					")\n",
 					"air_pollution = air_pollution.toPandas()"
 				],
-				"execution_count": 54
+				"execution_count": 74
 			},
 			{
 				"cell_type": "code",
@@ -181,21 +181,21 @@
 					")\n",
 					"historical_weather = historical_weather.toPandas()"
 				],
-				"execution_count": 55
+				"execution_count": 75
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"air_pollution.head(10)"
 				],
-				"execution_count": 56
+				"execution_count": 76
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"historical_weather.head(10)"
 				],
-				"execution_count": 57
+				"execution_count": 77
 			},
 			{
 				"cell_type": "code",
@@ -208,7 +208,7 @@
 					"ax_temp_dist.set_title(\"Distribution of Temperature\")\n",
 					"ax_temp_dist.grid(True)"
 				],
-				"execution_count": 62
+				"execution_count": 78
 			},
 			{
 				"cell_type": "code",
@@ -220,7 +220,7 @@
 					"ax_aqi_dist.set_title(\"Distribution of AQI Levels\")\n",
 					"ax_aqi_dist.grid(True)"
 				],
-				"execution_count": 69
+				"execution_count": 79
 			},
 			{
 				"cell_type": "code",
@@ -236,7 +236,7 @@
 					"ax_temp_humidity.set_title(\"Temperature vs Humidity\")\n",
 					"ax_temp_humidity.grid(True)"
 				],
-				"execution_count": 63
+				"execution_count": 80
 			},
 			{
 				"cell_type": "code",
@@ -250,40 +250,7 @@
 					"    color=\"aqi\", size=\"carbon_monoxide\")\n",
 					"fig_aqi_co.show()"
 				],
-				"execution_count": 61
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					}
-				},
-				"source": [
-					"# Display schema for weather data\n",
-					"#ex: ____.printSchema()\n",
-					"# Display schema for air pollution data\n",
-					"\n",
-					"# Convert Spark DataFrame to Pandas DataFrame for summary statistics (.toPandas())\n",
-					"\n",
-					"# Summary statistics for weather data\n",
-					"\n",
-					"# Summary statistics for air pollution data\n",
-					"\n",
-					"\n",
-					"#Use built-in visualization tools in Synapse notebooks or use external libraries like matplotlib, seaborn, or plotly.\n",
-					"#Minimum of 4 different types of visualizations.\n",
-					"#Examples: Distribution of temperature (with weather data), Distribution of AQI (air pollution data),\n",
-					"#Scatter plot of temperature vs humidity (weather data), Scatter plot of AQI vs CO (air pollution data).\n",
-					"#Terminate the Cluster Stop your session once completed with all the tasks."
-				],
-				"execution_count": null
+				"execution_count": 81
 			}
 		]
 	}
