@@ -52,7 +52,7 @@
 				"     ignoreNoFilesFound: false,",
 				"     documentForm: 'documentPerLine',",
 				"     wildcardPaths:['weather-data/*.json']) ~> source1",
-				"source1 foldDown(unroll(),",
+				"source1 foldDown(unroll(, list),",
 				"     mapColumn(",
 				"          calctime,",
 				"          city_id,",
