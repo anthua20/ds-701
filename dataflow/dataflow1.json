@@ -18,7 +18,11 @@
 						"referenceName": "Parquet1",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "sink1",
+					"rejectedDataLinkedService": {
+						"referenceName": "AzureBlobStorage1",
+						"type": "LinkedServiceReference"
+					}
 				}
 			],
 			"transformations": [
@@ -131,6 +135,7 @@
 				"select1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",
+				"     partitionFileNames:[''],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]
