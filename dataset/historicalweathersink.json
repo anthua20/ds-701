@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "*",
 				"folderPath": "bronze/historical_weather",
 				"container": "ds598anthonyhuangblobcontainer"
 			}
