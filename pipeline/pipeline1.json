@@ -19,9 +19,7 @@
 						"referenceName": "historicalweathersink",
 						"type": "DatasetReference"
 					},
-					"fieldList": [
-						"childItems"
-					],
+					"fieldList": [],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
 						"enablePartitionDiscovery": false
@@ -38,7 +36,10 @@
 					{
 						"activity": "Get Metadata1",
 						"dependencyConditions": [
-							"Completed"
+							"Completed",
+							"Succeeded",
+							"Failed",
+							"Skipped"
 						]
 					}
 				],
