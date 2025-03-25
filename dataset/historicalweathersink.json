@@ -5,11 +5,17 @@
 			"referenceName": "AzureBlobStorage2",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"FilePath": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "Json",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "@dataset().FilePath",
 				"folderPath": "bronze/historical_weather",
 				"container": "ds598anthonyhuangblobcontainer"
 			}

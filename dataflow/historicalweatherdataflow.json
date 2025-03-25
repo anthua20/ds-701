@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "historicalweatherdataflow",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -50,8 +50,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
-				"     documentForm: 'documentPerLine',",
-				"     wildcardPaths:['bronze/historical_weather/*']) ~> source2",
+				"     documentForm: 'documentPerLine') ~> source2",
 				"flatten2 derive(corrected_timestamp = iif(length(toString(timestamp)) == 10, toInteger(timestamp), toInteger(null())),",
 				"          location = \"Boston\") ~> derivedColumn1",
 				"derivedColumn1 filter(isNull(temp) || isNull(humidity) || isNull(corrected_timestamp) || length(toString(corrected_timestamp)) != 10) ~> filter1",
