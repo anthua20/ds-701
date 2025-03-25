@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "Parquet1",
+						"referenceName": "historicalweathersink",
 						"type": "DatasetReference"
 					},
 					"name": "sink1",
@@ -134,10 +134,18 @@
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"select1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'parquet',",
+				"     input(",
+				"          message as string,",
+				"          cod as string,",
+				"          city_id as integer,",
+				"          calctime as double,",
+				"          cnt as integer,",
+				"          list as (dt as integer, main as (temp as double, feels_like as double, pressure as integer, humidity as integer, temp_min as double, temp_max as double), wind as (speed as double, deg as integer, gust as double), clouds as (all as integer), weather as (id as integer, main as string, description as string, icon as string)[])[]",
+				"     ),",
 				"     partitionFileNames:['historical_weather'],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true,",
+				"     format: 'parquet') ~> sink1"
 			]
 		}
 	}
