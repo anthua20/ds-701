@@ -3,8 +3,8 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Get Metadata1",
-				"type": "GetMetadata",
+				"name": "historicalweatherdataflow",
+				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -15,76 +15,15 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"dataset": {
-						"referenceName": "historicalweathersink",
-						"type": "DatasetReference"
+					"dataflow": {
+						"referenceName": "historicalweatherdataflow",
+						"type": "DataFlowReference"
 					},
-					"fieldList": [],
-					"storeSettings": {
-						"type": "AzureBlobStorageReadSettings",
-						"recursive": true,
-						"enablePartitionDiscovery": false
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
 					},
-					"formatSettings": {
-						"type": "JsonReadSettings"
-					}
-				}
-			},
-			{
-				"name": "ForEach1",
-				"type": "ForEach",
-				"dependsOn": [
-					{
-						"activity": "Get Metadata1",
-						"dependencyConditions": [
-							"Completed",
-							"Succeeded",
-							"Failed",
-							"Skipped"
-						]
-					}
-				],
-				"userProperties": [
-					{
-						"name": "@concat('bronze/historical_weather/', item().name)"
-					}
-				],
-				"typeProperties": {
-					"items": {
-						"value": "@activity('Get Metadata1').output.childItems",
-						"type": "Expression"
-					},
-					"activities": [
-						{
-							"name": "historicalweatherdataflow",
-							"type": "ExecuteDataFlow",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"dataflow": {
-									"referenceName": "historicalweatherdataflow",
-									"type": "DataFlowReference",
-									"datasetParameters": {
-										"source2": {
-											"FilePath": "@concat('bronze/historical_weather/', item().name)"
-										}
-									}
-								},
-								"compute": {
-									"coreCount": 8,
-									"computeType": "General"
-								},
-								"traceLevel": "Fine"
-							}
-						}
-					]
+					"traceLevel": "Fine"
 				}
 			}
 		],
