@@ -9,7 +9,7 @@
 						"referenceName": "historicalweathersink",
 						"type": "DatasetReference"
 					},
-					"name": "source2"
+					"name": "source"
 				}
 			],
 			"sinks": [
@@ -18,24 +18,24 @@
 						"referenceName": "Parquet1",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "sink"
 				}
 			],
 			"transformations": [
 				{
-					"name": "derivedColumn1"
+					"name": "derivedColumn"
 				},
 				{
-					"name": "filter1"
+					"name": "filter"
 				},
 				{
 					"name": "derivedColumn2"
 				},
 				{
-					"name": "select1"
+					"name": "select"
 				},
 				{
-					"name": "flatten2"
+					"name": "flatten"
 				}
 			],
 			"scriptLines": [
@@ -51,12 +51,12 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     documentForm: 'arrayOfDocuments',",
-				"     wildcardPaths:['bronze/historical_weather/*']) ~> source2",
-				"flatten2 derive(corrected_timestamp = iif(length(toString(timestamp)) == 10, toInteger(timestamp), toInteger(null())),",
-				"          location = 'Boston') ~> derivedColumn1",
-				"derivedColumn1 filter(!isNull(temp) && !isNull(humidity) && length(toString(corrected_timestamp)) == 10",
-				") ~> filter1",
-				"filter1 derive(date_time = toTimestamp(toLong(corrected_timestamp) * 1000),",
+				"     wildcardPaths:['bronze/historical_weather/*']) ~> source",
+				"flatten derive(corrected_timestamp = iif(length(toString(timestamp)) == 10, toInteger(timestamp), toInteger(null())),",
+				"          location = 'Boston') ~> derivedColumn",
+				"derivedColumn filter(!isNull(temp) && !isNull(humidity) && length(toString(corrected_timestamp)) == 10",
+				") ~> filter",
+				"filter derive(date_time = toTimestamp(toLong(corrected_timestamp) * 1000),",
 				"          id = concat('Boston_', toString(corrected_timestamp)),",
 				"          temp_C = round(temp - 273.15, 2),",
 				"          temp_min_C = round(temp_min - 273.15, 2),",
@@ -103,8 +103,8 @@
 				"          weather_icon_value",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1",
-				"source2 foldDown(unrollMultiple(list,list.weather),",
+				"     skipDuplicateMapOutputs: true) ~> select",
+				"source foldDown(unrollMultiple(list,list.weather),",
 				"     mapColumn(",
 				"          calctime,",
 				"          city_id,",
@@ -128,8 +128,8 @@
 				"          weather_icon = list.weather.icon",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> flatten2",
-				"select1 sink(allowSchemaDrift: true,",
+				"     skipDuplicateMapOutputs: false) ~> flatten",
+				"select sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",
 				"     truncate: true,",
@@ -137,7 +137,7 @@
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true) ~> sink"
 			]
 		}
 	}
