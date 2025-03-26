@@ -116,7 +116,7 @@
 				"select sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",
-				"     partitionFileNames:['air_pollution_silver'],",
+				"     partitionFileNames:['pollution_silver'],",
 				"     truncate: true,",
 				"     umask: 0022,",
 				"     preCommands: [],",
