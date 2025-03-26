@@ -51,11 +51,13 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     documentForm: 'arrayOfDocuments',",
-				"     wildcardPaths:['bronze/historical_weather/*']) ~> source",
+				"     wildcardPaths:['bronze/historical_weather/*'],",
+				"     partitionBy('hash', 1)) ~> source",
 				"flatten derive(corrected_timestamp = iif(length(toString(timestamp)) == 10, toInteger(timestamp), toInteger(null())),",
-				"          location = 'Boston') ~> derivedColumn",
-				"derivedColumn filter(!isNull(temp) && !isNull(humidity) && length(toString(corrected_timestamp)) == 10",
-				") ~> filter",
+				"          location = 'Boston',",
+				"     partitionBy('hash', 1)) ~> derivedColumn",
+				"derivedColumn filter(!isNull(temp) && !isNull(humidity) && length(toString(corrected_timestamp)) == 10,",
+				"     partitionBy('hash', 1)) ~> filter",
 				"filter derive(date_time = toTimestamp(toLong(corrected_timestamp) * 1000),",
 				"          id = concat('Boston_', toString(corrected_timestamp)),",
 				"          temp_C = round(temp - 273.15, 2),",
@@ -71,7 +73,8 @@
 				"          weather_id_value = toInteger(toString(weather_id)),",
 				"          weather_main_value = toString(weather_main),",
 				"          weather_description_value = toString(weather_description),",
-				"          weather_icon_value = toString(weather_icon)) ~> derivedColumn2",
+				"          weather_icon_value = toString(weather_icon),",
+				"     partitionBy('hash', 1)) ~> derivedColumn2",
 				"derivedColumn2 select(mapColumn(",
 				"          clouds_all,",
 				"          feels_like_K = feels_like,",
@@ -102,6 +105,7 @@
 				"          weather_description_value,",
 				"          weather_icon_value",
 				"     ),",
+				"     partitionBy('hash', 1),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select",
 				"source foldDown(unrollMultiple(list,list.weather),",
@@ -127,6 +131,7 @@
 				"          weather_description = list.weather.description,",
 				"          weather_icon = list.weather.icon",
 				"     ),",
+				"     partitionBy('hash', 1),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten",
 				"select sink(allowSchemaDrift: true,",
@@ -137,7 +142,8 @@
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink"
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink"
 			]
 		}
 	}
