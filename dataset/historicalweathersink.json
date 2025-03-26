@@ -10,10 +10,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": {
-					"value": "@dataset().FilePath",
-					"type": "Expression"
-				},
 				"folderPath": "bronze/historical_weather",
 				"container": "ds598anthonyhuangblobcontainer"
 			}
