@@ -5,9 +5,9 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"linkedService": {
-						"referenceName": "AzureBlobStorage1",
-						"type": "LinkedServiceReference"
+					"dataset": {
+						"referenceName": "historicalweathersink",
+						"type": "DatasetReference"
 					},
 					"name": "source2"
 				}
@@ -39,12 +39,19 @@
 				}
 			],
 			"scriptLines": [
-				"source(useSchema: false,",
+				"source(output(",
+				"          message as string,",
+				"          cod as string,",
+				"          city_id as integer,",
+				"          calctime as double,",
+				"          cnt as integer,",
+				"          list as (dt as integer, main as (temp as double, feels_like as double, pressure as integer, humidity as integer, temp_min as double, temp_max as double), wind as (speed as double, deg as integer, gust as double), clouds as (all as integer), weather as (id as integer, main as string, description as string, icon as string)[])[]",
+				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
-				"     format: 'json',",
-				"     documentForm: 'documentPerLine') ~> source2",
+				"     documentForm: 'documentPerLine',",
+				"     wildcardPaths:['bronze/historical_weather/*.json']) ~> source2",
 				"flatten2 derive(corrected_timestamp = iif(length(toString(timestamp)) == 10, toInteger(timestamp), toInteger(null())),",
 				"          location = \"Boston\") ~> derivedColumn1",
 				"derivedColumn1 filter(isNull(temp) || isNull(humidity) || isNull(corrected_timestamp) || length(toString(corrected_timestamp)) != 10) ~> filter1",
