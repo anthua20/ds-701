@@ -1,5 +1,5 @@
 {
-	"name": "pollutionweatherdataflow",
+	"name": "pollutiondataflow",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
