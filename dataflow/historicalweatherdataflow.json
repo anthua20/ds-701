@@ -50,7 +50,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
-				"     documentForm: 'documentPerLine',",
+				"     documentForm: 'arrayOfDocuments',",
 				"     wildcardPaths:['bronze/historical_weather/*.json']) ~> source2",
 				"flatten2 derive(corrected_timestamp = iif(length(toString(timestamp)) == 10, toInteger(timestamp), toInteger(null())),",
 				"          location = \"Boston\") ~> derivedColumn1",
