@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "silver/historical_weather",
+				"folderPath": "silver",
 				"fileSystem": "ds598anthonyhuangblobcontainer"
 			},
 			"compressionCodec": "snappy"
