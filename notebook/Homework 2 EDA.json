@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "4c6e6319-130b-4da2-bb26-233794b6d783"
+				"spark.autotune.trackingId": "0cae5d6f-539d-463b-b290-153d1e60eae2"
 			}
 		},
 		"metadata": {
@@ -61,7 +61,7 @@
 					")\n",
 					""
 				],
-				"execution_count": 70
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -87,7 +87,7 @@
 					"historical_weather_df = spark.read.json(f\"abfss://{container_name}@{storage_account_name}.dfs.core.windows.net/{historical_weather_folder_path}\")\n",
 					"# Show the DataFrame"
 				],
-				"execution_count": 71
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -98,7 +98,7 @@
 					"import plotly.express as px\n",
 					"import pandas as pd"
 				],
-				"execution_count": 72
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -118,7 +118,7 @@
 					"\n",
 					"   air_pollution_df.printSchema()"
 				],
-				"execution_count": 73
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -139,7 +139,7 @@
 					")\n",
 					"air_pollution = air_pollution.toPandas()"
 				],
-				"execution_count": 74
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -181,21 +181,21 @@
 					")\n",
 					"historical_weather = historical_weather.toPandas()"
 				],
-				"execution_count": 75
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"air_pollution.head(10)"
 				],
-				"execution_count": 76
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"historical_weather.head(10)"
 				],
-				"execution_count": 77
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -208,7 +208,7 @@
 					"ax_temp_dist.set_title(\"Distribution of Temperature\")\n",
 					"ax_temp_dist.grid(True)"
 				],
-				"execution_count": 78
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -220,7 +220,7 @@
 					"ax_aqi_dist.set_title(\"Distribution of AQI Levels\")\n",
 					"ax_aqi_dist.grid(True)"
 				],
-				"execution_count": 79
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -236,7 +236,7 @@
 					"ax_temp_humidity.set_title(\"Temperature vs Humidity\")\n",
 					"ax_temp_humidity.grid(True)"
 				],
-				"execution_count": 80
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -250,7 +250,7 @@
 					"    color=\"aqi\", size=\"carbon_monoxide\")\n",
 					"fig_aqi_co.show()"
 				],
-				"execution_count": 81
+				"execution_count": null
 			}
 		]
 	}
