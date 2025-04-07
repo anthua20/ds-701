@@ -1,0 +1,17 @@
+{
+	"name": "AggWeatherConditionsSQL",
+	"properties": {
+		"content": {
+			"query": "drop external table externalaggweatherconditions\ndrop table aggtempextremes\nCREATE EXTERNAL TABLE ExternalAggWeatherConditions (\n\tdate VARCHAR(100),\n    weather_main_value VARCHAR(100),\n    count INT\n)\nWITH (\n    LOCATION = 'gold/agg_weather_conditions/part-00000-9b500c25-1e5f-43f7-ab97-f054f9ad1a0b-c000.snappy.parquet',\n    DATA_SOURCE = MyDataSource,\n    FILE_FORMAT = ParquetFileFormat\n);\n\nCREATE TABLE AggWeatherConditions (\n\tdate VARCHAR(100),\n    weather_main_value VARCHAR(100),\n    count INT\n);\nINSERT INTO AggWeatherConditions (\n    date,\n    weather_main_value,\n    count\n)\nSELECT DISTINCT\n    date,\n    weather_main_value,\n    count\nFROM ExternalAggWeatherConditions;\nGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "ds598anthonyhuangsqlpool",
+				"poolName": "ds598anthonyhuangsqlpool"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
