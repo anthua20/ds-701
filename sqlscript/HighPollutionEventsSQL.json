@@ -2,7 +2,7 @@
 	"name": "HighPollutionEventsSQL",
 	"properties": {
 		"content": {
-			"query": "CREATE EXTERNAL TABLE ExternalAggHighPollutionEvents (\n\tdate VARCHAR(100),\n    high_pollution_events INT\n)\nWITH (\n    LOCATION = 'gold/agg_high_pollution_events/part-00000-5145ceed-5e9d-41ef-9440-4187425396c5-c000.snappy.parquet',\n    DATA_SOURCE = MyDataSource,\n    FILE_FORMAT = ParquetFileFormat\n);\n\nCREATE TABLE HighPollutionEvents (\n\tdate VARCHAR(100),\n    high_pollution_events INT\n);\nINSERT INTO HighPollutionEvents (\n    date,\n    high_pollution_events\n)\nSELECT DISTINCT\n    date,\n    high_pollution_events\nFROM ExternalAggHighPollutionEvents;\nGO",
+			"query": "DROP external table ExternalAggHighPollutionEvents\ndrop table high_pollution_events\nCREATE EXTERNAL TABLE ExternalAggHighPollutionEvents (\n\tdate VARCHAR(100),\n    high_pollution_events INT\n)\nWITH (\n    LOCATION = 'gold/agg_high_pollution_events/part-00000-5145ceed-5e9d-41ef-9440-4187425396c5-c000.snappy.parquet',\n    DATA_SOURCE = MyDataSource,\n    FILE_FORMAT = ParquetFileFormat\n);\n\nCREATE TABLE HighPollutionEvents (\n\tdate VARCHAR(100),\n    high_pollution_events INT\n);\nINSERT INTO HighPollutionEvents (\n    date,\n    high_pollution_events\n)\nSELECT DISTINCT\n    date,\n    high_pollution_events\nFROM ExternalAggHighPollutionEvents;\nGO",
 			"metadata": {
 				"language": "sql"
 			},
