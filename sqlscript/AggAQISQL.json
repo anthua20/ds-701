@@ -1,0 +1,17 @@
+{
+	"name": "AggAQISQL",
+	"properties": {
+		"content": {
+			"query": "DROP external table externalaggaqi\ndrop table aggaqi\nCREATE EXTERNAL TABLE ExternalAggAQI (\n\tdate VARCHAR(100),\n    avg_us_aqi FLOAT\n)\nWITH (\n    LOCATION = 'gold/agg_aqi/part-00000-eabc547a-68b2-48f7-885b-bc22f7b33d76-c000.snappy.parquet',\n    DATA_SOURCE = MyDataSource,\n    FILE_FORMAT = ParquetFileFormat\n);\n\nCREATE TABLE AggAQI (\n\tdate VARCHAR(100),\n    avg_us_aqi FLOAT,\n    count INT\n);\nINSERT INTO AggAQI (\n    date,\n    avg_us_aqi\n)\nSELECT DISTINCT\n    date,\n    avg_us_aqi\nFROM ExternalAggAQI;\nGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "ds598anthonyhuangsqlpool",
+				"poolName": "ds598anthonyhuangsqlpool"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
