@@ -1,0 +1,20 @@
+{
+	"name": "DimLocationSQL",
+	"properties": {
+		"folder": {
+			"name": "hw7"
+		},
+		"content": {
+			"query": "drop table dimlocation\nCREATE TABLE DimLocation (\n    location NVARCHAR(100),\n    lon FLOAT,\n    lat FLOAT\n);\nGO\n\nINSERT INTO DimLocation (\n    location,\n    lon,\n    lat\n)\nSELECT DISTINCT \n    location,\n    lon,\n    lat\nFROM ExternalWeather;\nGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "ds598anthonyhuangsqlpool",
+				"poolName": "ds598anthonyhuangsqlpool"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
