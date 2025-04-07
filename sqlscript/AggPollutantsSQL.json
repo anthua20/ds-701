@@ -1,6 +1,9 @@
 {
 	"name": "AggPollutantsSQL",
 	"properties": {
+		"folder": {
+			"name": "hw7"
+		},
 		"content": {
 			"query": "drop external table externalaggpollutants\ndrop table aggpollutants\nCREATE EXTERNAL TABLE ExternalAggPollutants (\n\tdate VARCHAR(100),\n    avg_co FLOAT,\n    avg_no2 FLOAT,\n    avg_03 FLOAT,\n    avg_so2 FLOAT,\n    avg_pm2_5 FLOAT,\n    avg_pm10 FLOAT\n)\nWITH (\n    LOCATION = 'gold/agg_pollutants/part-00000-6e276baa-4949-42a7-82cc-1544709a4668-c000.snappy.parquet',\n    DATA_SOURCE = MyDataSource,\n    FILE_FORMAT = ParquetFileFormat\n);\n\nCREATE TABLE AggPollutants (\n\tdate VARCHAR(100),\n    avg_co FLOAT,\n    avg_no2 FLOAT,\n    avg_03 FLOAT,\n    avg_so2 FLOAT,\n    avg_pm2_5 FLOAT,\n    avg_pm10 FLOAT\n);\nINSERT INTO AggPollutants (\n    date,\n    avg_co,\n    avg_no2,\n    avg_03,\n    avg_so2,\n    avg_pm2_5,\n    avg_pm10\n)\nSELECT DISTINCT\n    date,\n    avg_co,\n    avg_no2,\n    avg_03,\n    avg_so2,\n    avg_pm2_5,\n    avg_pm10\nFROM ExternalAggPollutants;\nGO",
 			"metadata": {

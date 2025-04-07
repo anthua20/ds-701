@@ -1,0 +1,20 @@
+{
+	"name": "DimDateSQL",
+	"properties": {
+		"folder": {
+			"name": "hw7"
+		},
+		"content": {
+			"query": "drop table dimdate\nCREATE TABLE DimDate (\n    date_key INT,\n    date_time DATETIME2,\n    date DATE,\n    year INT,\n    quarter INT,\n    month INT,\n    month_name VARCHAR(10),\n    day INT,\n    day_of_week INT,\n    day_name VARCHAR(10),\n    week_of_year INT,\n    is_weekend BIT\n);\nGO\n\nINSERT INTO DimDate (\n    date_time,\n    date,\n    year,\n    quarter,\n    month,\n    month_name,\n    day,\n    day_of_week,\n    day_name,\n    week_of_year,\n    is_weekend\n)\nSELECT DISTINCT \n    date_time,\n    CAST(date_time AS DATE) AS date,\n    DATEPART(YEAR, date_time) AS year,\n    DATEPART(QUARTER, date_time) AS quarter,\n    DATEPART(MONTH, date_time) AS month,\n    DATENAME(MONTH, date_time) AS month_name,\n    DATEPART(DAY, date_time) AS day,\n    DATEPART(WEEKDAY, date_time) AS day_of_week,\n    DATENAME(WEEKDAY, date_time) AS day_name,\n    DATEPART(WEEK, date_time) AS week_of_year,\n    CASE WHEN DATEPART(WEEKDAY, date_time) IN (1, 7) THEN 1 ELSE 0 END AS is_weekend\nFROM ExternalWeather;\nGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "ds598anthonyhuangsqlpool",
+				"poolName": "ds598anthonyhuangsqlpool"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

@@ -1,6 +1,9 @@
 {
 	"name": "AggTempExtremesSQL",
 	"properties": {
+		"folder": {
+			"name": "hw7"
+		},
 		"content": {
 			"query": "drop external table externalaggtempextremes\ndrop table aggtempextremes\nCREATE EXTERNAL TABLE ExternalAggTempExtremes (\n\tdate VARCHAR(100),\n    max_temp_F FLOAT,\n    min_temp_F FLOAT\n)\nWITH (\n    LOCATION = 'gold/agg_temp_extremes/part-00000-c514cc1b-f4c9-4911-a082-8d43e438cce1-c000.snappy.parquet',\n    DATA_SOURCE = MyDataSource,\n    FILE_FORMAT = ParquetFileFormat\n);\n\nCREATE TABLE AggTempExtremes (\n\tdate VARCHAR(100),\n    max_temp_F FLOAT,\n    min_temp_F FLOAT\n);\nINSERT INTO AggTempExtremes (\n    date,\n    max_temp_F,\n    min_temp_F\n)\nSELECT DISTINCT\n    date,\n    max_temp_F,\n    min_temp_F\nFROM ExternalAggTempExtremes;\nGO",
 			"metadata": {

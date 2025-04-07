@@ -1,6 +1,9 @@
 {
 	"name": "AggWeatherSQL",
 	"properties": {
+		"folder": {
+			"name": "hw7"
+		},
 		"content": {
 			"query": "drop external table externalaggweather\ndrop table aggweather\nCREATE EXTERNAL TABLE ExternalAggWeather (\n\tdate VARCHAR(100),\n    avg_temp_F FLOAT,\n    avg_humidity FLOAT,\n    avg_wind_speed FLOAT,\n    max_temp_F FLOAT,\n    min_temp_F FLOAT,\n    weather_records INT\n)\nWITH (\n    LOCATION = 'gold/agg_weather/part-00000-45f82f10-2898-48f8-9509-d789d6f5b281-c000.snappy.parquet',\n    DATA_SOURCE = MyDataSource,\n    FILE_FORMAT = ParquetFileFormat\n);\n\nCREATE TABLE AggWeather (\n\tdate VARCHAR(100),\n    avg_temp_F FLOAT,\n    avg_humidity FLOAT,\n    avg_wind_speed FLOAT,\n    max_temp_F FLOAT,\n    min_temp_F FLOAT,\n    weather_records INT\n);\nINSERT INTO AggWeather (\n\tdate,\n    avg_temp_F,\n    avg_humidity,\n    avg_wind_speed,\n    max_temp_F,\n    min_temp_F,\n    weather_records\n)\nSELECT DISTINCT\n\tdate,\n    avg_temp_F,\n    avg_humidity,\n    avg_wind_speed,\n    max_temp_F,\n    min_temp_F,\n    weather_records\nFROM ExternalAggWeather;\nGO",
 			"metadata": {
