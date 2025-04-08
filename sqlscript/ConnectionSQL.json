@@ -1,5 +1,5 @@
 {
-	"name": "Connection",
+	"name": "ConnectionSQL",
 	"properties": {
 		"folder": {
 			"name": "hw7"
